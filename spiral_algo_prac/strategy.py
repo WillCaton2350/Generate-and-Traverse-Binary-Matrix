@@ -76,6 +76,7 @@ class Transpose(Abstract_Class):
             # first we need to separate / pop all of the values out of the lists / matrix.
             # The zip() function pairs elements from each list based on their indices. (Transposing / Transforming)
             # new we need to write the expression which converts the tuple of values created by the zip() function into a list. (list(x))
+            # Then use the for loop to complete the list comprehension.
             print(f'Matrix 3: {transposed_matrix}')
             self.result = self.spiral_traversal(transposed_matrix)
             print(f'Result 3: {self.result}')
