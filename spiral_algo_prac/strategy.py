@@ -20,30 +20,31 @@ class Abstract_Class(ABC):
         pass
 
     def spiral_traversal(self,matrix):
+        top = 0 
+        bottom = len(matrix) # full length of the bottom of the matrix
+        left = 0 
+        right = len(matrix[0]) # full length of the top row aka the origins of each column
         try:
-            top = 0
-            bottom = len(matrix)
-            left = 0
-            right = len(matrix[0])
             while top < bottom and left < right: # Base Case
-                # write a list comprehension with the += operand to iterate over the top row
-                # traverse the top row from left to right then shift down after completion
+                # Traverse the top row of the matrix from left to right with a list comp
                 self.result += [matrix[top][i] for i in range(left,right)]
                 top += 1
-                
-                self.result += [matrix[right-1][x] for x in range(top-1,bottom-1,-1)]
+
+                self.result += [matrix[right-1][i] for i in range(top,bottom)]
                 right -= 1
-                # re establish the Base Case
+
+                # re establish the base case
                 if top < bottom:
-                    self.result += [matrix[bottom-1][y] for y in range(right-1,left-1,-1)]
+                    self.result += [matrix[bottom-1][i] for i in range(right-1,left-1,-1)]
                     bottom -= 1
-                
+
                 if left < right:
-                    self.result += [matrix[left][z] for z in range(bottom,top)]
+                    self.result += [matrix[left][i] for i in range(bottom-1,top-1,-1)]
                     left += 1
+            print(f'Result: {self.result}')
             return self.result
-        except (ValueError,TypeError,IndexError) as err:
-            logging.error(f'{err}')
+        except TypeError:
+            logging.error()
 
 class Generate(Abstract_Class):
     def main(self):
