@@ -9,6 +9,7 @@ import logging
 # STEP 2: sub-class(es) with instance methods and functionality
 # STEP 3: The actual strategy pattern's ability to switch between the family of algorithms
 # STEP 4: Instantiate for dynamically switching between algos
+
 # Explanation: We use a strategy pattern to cycle through different generated matrices and traverse each one using a spiral traversal algorithm.
 
 class Abstract_Class(ABC):
@@ -48,7 +49,9 @@ class Generate(Abstract_Class):
     def main(self):
         try: # generate binary matrix (nested)
             matrix = [[ i for i in self.container] for i in self.container]
+            print(f'Matrix 1: {matrix}')
             self.result = self.spiral_traversal(matrix) # Call stack
+            print(f'Result 1: {self.result}')
             return self.result
         except (ValueError,TypeError,IndexError) as err:
             logging.error(f'{err}')
@@ -57,19 +60,40 @@ class Reversed(Abstract_Class):
     def main(self): # generate reversed binary matrix
         try:
             matrix = [[ i for i in reversed(self.container)] for i in reversed(self.container)]
+            print(f'Matrix 2: {matrix}')
             self.result = self.spiral_traversal(matrix) # Call Stack
+            print(f'Result 2: {self.result}')
             return self.result
         except (ValueError,TypeError,IndexError) as err:
             logging.error(f'{err}') 
-    
+
+class Transpose(Abstract_Class):
+    def main(self):
+        try:
+            matrix = [[ i for i in self.container] for i in self.container]
+            # generate a nested matrix
+            transposed_matrix = [list(x) for x in zip(*matrix,strict=True)]
+            # first we need to separate / pop all of the values out of the lists / matrix.
+            # The zip() function pairs elements from each list based on their indices. (Transposing / Transforming)
+            # new we need to write the expression which converts the tuple of values created by the zip() function into a list. (list(x))
+            print(f'Matrix 3: {transposed_matrix}')
+            self.result = self.spiral_traversal(transposed_matrix)
+            print(f'Result 3: {self.result}')
+            return self.result
+        except ValueError as err:
+            logging.error(f'{err}')
+
 class Randomized(Abstract_Class):
     def main(self): # generate randomized binary matrix
         try:
             matrix = [shuffle(val:=self.container[:]) or val for i in range(4)]
+            print(f'Matrix 4: {matrix}')
             self.result = self.spiral_traversal(matrix)
+            print(f'Result 4: {self.result}')
             return self.result
         except (ValueError,TypeError,IndexError) as err:
             logging.error(f'{err}')  
+
        
 class Strategy_Pattern: # Switch between strategies (The ability to choose and execute each strategy)
     def __init__(self,strategy: Abstract_Class):
@@ -86,14 +110,18 @@ class Strategy_Pattern: # Switch between strategies (The ability to choose and e
 if __name__ == "__main__":
     try:
         # Call each strategy dynamically (one at a time or the result list compounds (almost like concatenating values))
-        situation = Strategy_Pattern(Generate())
-        situation.execute_strategy()
+        #situation = Strategy_Pattern(Generate())
+        #situation.execute_strategy()
 
         #situation = Strategy_Pattern(Reversed())
         #situation.execute_strategy()
 
+        situation = Strategy_Pattern(Transpose())
+        situation.execute_strategy()
+
         #situation = Strategy_Pattern(Randomized())
         #situation.execute_strategy()
+
     except KeyboardInterrupt:
         traceback.print_exc(limit=None,chain=None,file=None)
         
