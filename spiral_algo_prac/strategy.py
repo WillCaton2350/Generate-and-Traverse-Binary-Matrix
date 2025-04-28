@@ -48,9 +48,7 @@ class Generate(Abstract_Class):
     def main(self):
         try: # generate binary matrix (nested)
             matrix = [[ i for i in self.container] for i in self.container]
-            print(f'Matrix 1: {matrix}')
             self.result = self.spiral_traversal(matrix) # Call stack
-            print(f'Result 1: {self.result}')
             return self.result
         except (ValueError,TypeError,IndexError) as err:
             logging.error(f'{err}')
@@ -59,9 +57,7 @@ class Reversed(Abstract_Class):
     def main(self): # generate reversed binary matrix
         try:
             matrix = [[ i for i in reversed(self.container)] for i in reversed(self.container)]
-            print(f'Matrix 2: {matrix}')
             self.result = self.spiral_traversal(matrix) # Call Stack
-            print(f'Result 2: {self.result}')
             return self.result
         except (ValueError,TypeError,IndexError) as err:
             logging.error(f'{err}') 
@@ -70,9 +66,7 @@ class Randomized(Abstract_Class):
     def main(self): # generate randomized binary matrix
         try:
             matrix = [shuffle(val:=self.container[:]) or val for i in range(4)]
-            print(f'Matrix 3: {matrix}')
             self.result = self.spiral_traversal(matrix)
-            print(f'Result 3: {self.result}')
             return self.result
         except (ValueError,TypeError,IndexError) as err:
             logging.error(f'{err}')  
