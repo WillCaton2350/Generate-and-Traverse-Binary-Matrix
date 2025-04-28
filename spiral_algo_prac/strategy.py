@@ -86,7 +86,7 @@ class Transpose(Abstract_Class):
 
 class Randomized(Abstract_Class):
     def main(self): # generate randomized binary matrix
-        try:
+        try: # The := walrus operator assigns value and funtionality to a variable so it can be used later. in this case (val)
             matrix = [shuffle(val:=self.container[:]) or val for i in range(4)]
             print(f'Matrix 4: {matrix}')
             self.result = self.spiral_traversal(matrix)
