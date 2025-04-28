@@ -25,7 +25,6 @@ class singleton:
         try:
             cls.matrix = [shuffle(root:=cls.container[:]) or root for i in range(5)] # (5) because the number of items or integers in the list
             # slicing to use the length of the whole list
-            print(cls.matrix)
         except ValueError:
             traceback.print_exc(limit=None,chain=None,file=None)
         return cls.matrix
@@ -56,7 +55,6 @@ class singleton:
                     cls.result += [cls.matrix[left][z] for z in range(bottom,top)] # Because left and right are columns, positive and negative are top to bottom and vise versa. 
                     left += 1
             # print / return the result
-            print(cls.result)
             return cls.result   
         except (IndexError,TypeError) as e:
             logging.error(e)       
