@@ -9,51 +9,65 @@ import logging
 # STEP 2: sub-class(es) with instance methods and functionality
 # STEP 3: The actual strategy pattern's ability to switch between the family of algorithms
 # STEP 4: Instantiate for dynamically switching between algos
-
 # Explanation: We use a strategy pattern to cycle through different generated matrices and traverse each one using a spiral traversal algorithm.
 
 class Abstract_Class(ABC):
-    container = [1,0,1,0]
+    container = [1,2,3,4]
     result = []
     @abstractmethod
     def main(self):
         pass
 
     def spiral_traversal(self,matrix):
-        top = 0 
-        bottom = len(matrix) # full length of the bottom of the matrix
-        left = 0 
-        right = len(matrix[0]) # full length of the top row aka the origins of each column
         try:
+            top = 0
+            bottom = len(matrix)
+            left = 0
+            right = len(matrix[0])
             while top < bottom and left < right: # Base Case
-                # Traverse the top row of the matrix from left to right with a list comp
+                # write a list comprehension with the += operand to iterate over the top row
+                # traverse the top row from left to right then shift down after completion
+                """
+                When working with a matrix (a 2D list), you use two brackets: matrix[row][column]. 
+                The first index accesses the row (which is itself a list), and the second accesses the column within that row. 
+                In contrast, a regular list is 1D, so you only need one index: list[x]. 
+                Accessing a matrix value is like using an (x, y) coordinate—where x is the row and y is the column.
+                """
                 self.result += [matrix[top][i] for i in range(left,right)]
+                # traverse the top [row] by iterating over each [column]
                 top += 1
-
-                self.result += [matrix[right-1][i] for i in range(top,bottom)]
+                
+                self.result += [matrix[x][right-1] for x in range(top,bottom)]
+                # traverse down the right [column] by iterating over each [row]
+                '''
+                matrix = [
+                [1, 2, 3],  # row 0   |  -| *
+                [4, 5, 6],  # row 1   |   | *
+                [7, 8, 9],  # row 2   |  -| *
+                [10, 11, 12]# row 3   V
+                ]
+                '''
                 right -= 1
-
-                # re establish the base case
+                # re establish the Base Case
                 if top < bottom:
-                    self.result += [matrix[bottom-1][i] for i in range(right-1,left-1,-1)]
+                    self.result += [matrix[bottom-1][y] for y in range(right-1,left-1,-1)]
                     bottom -= 1
-
+                
                 if left < right:
-                    self.result += [matrix[left][i] for i in range(bottom-1,top-1,-1)]
+                    self.result += [matrix[z][left] for z in range(bottom-1,top-1,-1)]
                     left += 1
-            print(f'Result: {self.result}')
             return self.result
-        except TypeError:
-            logging.error()
+        except (ValueError,TypeError,IndexError) as err:
+            logging.error(f'{err}')
 
 class Generate(Abstract_Class):
     def main(self):
         try: # generate binary matrix (nested)
             matrix = [[ i for i in self.container] for i in self.container]
             print(f'Matrix 1: {matrix}')
-            self.result = self.spiral_traversal(matrix) # Call stack
-            print(f'Result 1: {self.result}')
-            return self.result
+            result = self.spiral_traversal(matrix) # Call stack
+            print(f'Result 1: {result}')
+            return result
         except (ValueError,TypeError,IndexError) as err:
             logging.error(f'{err}')
 
@@ -77,7 +91,6 @@ class Transpose(Abstract_Class):
             # first we need to separate / pop all of the values out of the lists / matrix.
             # The zip() function pairs elements from each list based on their indices. (Transposing / Transforming)
             # new we need to write the expression which converts the tuple of values created by the zip() function into a list. (list(x))
-            # Then use the for loop to complete the list comprehension.
             print(f'Matrix 3: {transposed_matrix}')
             self.result = self.spiral_traversal(transposed_matrix)
             print(f'Result 3: {self.result}')
@@ -95,7 +108,6 @@ class Randomized(Abstract_Class):
             return self.result
         except (ValueError,TypeError,IndexError) as err:
             logging.error(f'{err}')  
-
        
 class Strategy_Pattern: # Switch between strategies (The ability to choose and execute each strategy)
     def __init__(self,strategy: Abstract_Class):
@@ -112,18 +124,17 @@ class Strategy_Pattern: # Switch between strategies (The ability to choose and e
 if __name__ == "__main__":
     try:
         # Call each strategy dynamically (one at a time or the result list compounds (almost like concatenating values))
-        #situation = Strategy_Pattern(Generate())
-        #situation.execute_strategy()
+        situation = Strategy_Pattern(Generate())
+        situation.execute_strategy()
 
         #situation = Strategy_Pattern(Reversed())
         #situation.execute_strategy()
 
-        situation = Strategy_Pattern(Transpose())
-        situation.execute_strategy()
+        #situation = Strategy_Pattern(Transpose())
+        #situation.execute_strategy()
 
         #situation = Strategy_Pattern(Randomized())
         #situation.execute_strategy()
 
     except KeyboardInterrupt:
         traceback.print_exc(limit=None,chain=None,file=None)
-        
