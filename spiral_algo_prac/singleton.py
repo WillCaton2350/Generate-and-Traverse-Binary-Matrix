@@ -44,7 +44,7 @@ class singleton:
                 # At the end of the traversal of the top row we shift down because we have completed the first row of the matrix.
                 top += 1 
                 # traverse the far (right column) from (top to bottom) with the (iterator) and shift to the next column. (shift to the left -1)
-                cls.result += [cls.matrix[right-1][x] for x in range(top-1,bottom-1,-1)] 
+                cls.result += [cls.matrix[right-1][x] for x in range(top,bottom)] 
                 right -=1 
                 # re-enforce the BaseCase with a conditional statement.
                 if top < bottom:
@@ -52,7 +52,7 @@ class singleton:
                     bottom -= 1 
                 # re-enforce the BaseCase with a conditional statement.
                 if left < right:
-                    cls.result += [cls.matrix[left][z] for z in range(bottom,top)] # Because left and right are columns, positive and negative are top to bottom and vise versa. 
+                    cls.result += [cls.matrix[left][z] for z in range(bottom-1,top-1,-1)] # Because left and right are columns, positive and negative are top to bottom and vise versa. 
                     left += 1
             # print / return the result
             return cls.result   
